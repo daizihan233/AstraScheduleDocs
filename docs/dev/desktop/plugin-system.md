@@ -191,7 +191,67 @@ pluginManager.offStateChange(listener);  // 移除
 
 ## 渲染进程插件
 
-渲染进程插件通过 `plugin.json` 的 `renderer` 字段指定入口文件。插件管理器通过 `getRendererPlugins()` 返回所有已启用且有渲染进程入口的插件列表，主进程在创建窗口时加载。
+渲染进程插件通过 `plugin.json` 的 `renderer` 字段指定入口文件。渲染进程启动时调用 `getRendererPlugins()` 加载已启用且带有渲染入口的插件。
+
+### getRendererPlugins 返回字段
+
+| 字段 | 说明 |
+|------|------|
+| `name` | 插件名 |
+| `version` | 版本 |
+| `rendererPath` | 渲染入口绝对路径 |
+| `enabled` | 是否启用 |
+| `hooks` | `plugin.json` 声明的钩子列表（渲染侧按此过滤） |
+
+### 渲染钩子
+
+| 钩子 | 说明 |
+|------|------|
+| `onInit` | 模块加载后调用，参数 `{ document, ipcRenderer, logger }` |
+| `onRender` | 与 `onInit` 相同上下文；适合注入 DOM |
+| `onTick` | 宿主每秒课表 tick 后调用，参数为只读 `snapshot`（见下表） |
+| `onTimeStateChange` | 主进程时间状态变化经 IPC `plugin:timeStateChange` 转发 |
+| `onScheduleReminder` | 提醒经 IPC `plugin:scheduleReminder` 转发 |
+| `onDestroy` | 卸载时清理 |
+
+主进程插件钩子（`main.js`）仍由 `PluginManager.triggerHook` 触发；渲染钩子由 `js/renderer.js` 中的 `RendererPluginManager` 触发。两者可同时声明在 `hooks` 中。
+
+### onTick snapshot 字段
+
+| 字段 | 说明 |
+|------|------|
+| `scheduleArray` | 当日课程简写列表 |
+| `currentHighlight` | `{ index, type, fullName, countdownText, isEnd }` |
+| `divider` | 分隔线位置索引 |
+| `nextScheduleName` | 下一节全名或 `null` |
+| `subjectNames` | 科目简写 → 全名 |
+| `week` | `{ chinese, english }` |
+| `weather` | `{ tempText, weatherText }` |
+| `countdownDays` | 右侧倒数日展示文本 |
+| `bannerText` | 当前横幅文案 |
+| `wsConnected` | WebSocket 是否连接 |
+| `displayMode` | `'expanded'` \| `'mini'`（宿主按上课隐藏/始终缩小等计算） |
+| `now` | 当前时间字符串（可选） |
+
+### 完整替换默认 UI
+
+推荐做法：
+
+1. 在 `onInit`/`onRender` 隐藏 `#globalContainer`、`#miniCountdown`
+2. 将新 UI 挂到 `#plugin-container`
+3. 仅消费 `onTick(snapshot)`，不要在插件内重算课表
+4. `onDestroy` 时移除插件 DOM 并恢复原节点 `display`
+
+半透明等主题可用 CSS 变量（插件侧应提供默认值），例如：
+
+```css
+.as-newui-root {
+  --as-newui-bg-opacity: 0.78;
+  --as-newui-mini-bg-opacity: 0.72;
+}
+```
+
+参考实现：仓库旁的 `asplugin-newui`（教育青蓝居中卡片栈）。
 
 ## 权限
 
@@ -216,4 +276,5 @@ pluginManager.offStateChange(listener);  // 移除
 
 ## 示例
 
-`main/plugin/example/` 目录包含一个综合示例插件，演示全部 7 个钩子的用法。
+- 钩子综合示例：独立仓库 `asplugin-example`（`AstraSchedule/asplugin-example`）
+- UI 替换示例：`asplugin-newui`（教育青蓝卡片栈，依赖上述渲染 snapshot 能力）
