@@ -18,11 +18,11 @@ AstraSchedule 是一套学校班级电子课表系统，包含多个独立组件
 
 您现在就可以前往 [i.getastra.cn](https://i.getastra.cn) 登录演示环境或沙盒环境进行尝试！
 
-|          | 演示环境       | 沙盒环境            |
-| -------- | -------------- | ------------------- |
-| 后端地址 | class.khbit.cn | sandbox.getastra.cn |
-| 用户名   | test           | sandbox             |
-| 密码     | test123        | sandbox123          |
+|          | 演示环境          | 沙盒环境            |
+| -------- | ----------------- | ------------------- |
+| 后端地址 | class.getastra.cn | sandbox.getastra.cn |
+| 用户名   | test              | sandbox             |
+| 密码     | test123           | sandbox123          |
 
 > [!WARNING]
 >

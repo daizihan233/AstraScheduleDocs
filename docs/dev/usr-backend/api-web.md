@@ -147,9 +147,10 @@
       "subjects": 4,
       "data_versions": 12,
       "autorun_records": 6,
-      "countdown_records": 3
+      "countdown_records": 3,
+      "users": 2
     },
-    "total": 53
+    "total": 55
   }
 }
 ```
