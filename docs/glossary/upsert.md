@@ -1,3 +1,7 @@
+> [!DANGER]
+>
+> 本页由 AI 工具参考代码编写，尚未经过人工审核，内容仅供参考。如果无法解决问题或需要协助部署，可邮箱联系：kuohu@getastra.cn
+
 # Upsert
 
 ## 通俗解释
@@ -21,10 +25,11 @@ SQL 语法（MySQL）：
 INSERT INTO table (id, name) VALUES (1, 'test')
 ON DUPLICATE KEY UPDATE name = VALUES(name)
 ```
+> 提示：MySQL 8.0.20+ 中 `VALUES(name)` 已弃用，推荐写作 `name = NEW.name`。
 
 优势：
 - **原子操作**：一条语句完成，无需事务
 - **避免竞态**：并发操作不会丢失更新
 - **简化代码**：不用先查后改
 
-在 AstraSchedule 中，配置类写入统一使用 upsert，保证数据一致性。
+在 AstraSchedule 中，配置类写入统一使用 GORM 的 `clause.OnConflict` 实现 upsert，保证数据一致性且同时兼容 SQLite 与 MySQL。

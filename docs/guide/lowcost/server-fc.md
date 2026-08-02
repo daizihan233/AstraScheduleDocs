@@ -13,7 +13,7 @@
 ## 你需要准备
 
 - 阿里云账号（已实名认证）
-- 从 [GitHub Release](https://github.com/AstraSchedule/backend/releases/latest) 下载 usr-backend 对应 Linux 二进制（资源名：`AstraScheduleServerGo-linux-amd64`）
+- 从 [GitHub Release](https://github.com/AstraSchedule/usr-backend/releases/latest) 下载 usr-backend 对应 Linux 二进制（资源名：`AstraScheduleServerGo-linux-amd64`）
 
 ## 步骤
 
@@ -43,8 +43,10 @@
 
 1. 在「代码」区域，选择「上传 ZIP 包」
 2. 将下载的 `AstraScheduleServerGo-linux-amd64` 重命名为 `astrago`
-3. 创建 `config.toml` 配置文件（内容见下方）
+3. 创建 `config.toml` 配置文件（内容见下方；可从 `config.template.toml` 复制后修改，注意模板默认 `db.type = "mysql"`、`run.serverless = true`，必须按下文示例改成 SQLite）
 4. 将两个文件打包为 ZIP 并上传
+
+> ⚠️ 打包前请确保 `astrago` 具有执行权限（Linux 下执行 `chmod +x astrago`）。部分压缩工具打包 ZIP 时不保留执行权限，会导致启动命令 `./astrago` 失败。
 
 ### 4. 配置文件
 
@@ -63,7 +65,7 @@ domain = ["https://admin.your-domain.com"]
 
 [db]
 type = "sqlite"
-path = "./data/astra.db"
+path = "/tmp/data/astra.db"  # 函数计算的临时目录，可写但实例回收后会被清空
 
 [log]
 debug = false
@@ -72,7 +74,7 @@ debug = false
 serverless = true
 ```
 
-> 💡 使用 SQLite 无需额外配置数据库。数据存储在函数计算实例的 `/tmp` 目录中。注意：SQLite 数据在实例回收后可能丢失，建议定期备份。
+> 💡 使用 SQLite 无需额外配置数据库。`path` 指向函数计算实例的 `/tmp` 目录（唯一可写目录）。注意：SQLite 数据在实例回收后可能丢失，建议定期备份（见下文「关于数据库」）。
 
 > 📝 **天气 API 配置**：`[apikey]` 部分用于配置和风天气 API。如果需要启用天气功能，请参考 [获取和风天气 API 凭证](./weather-api.md) 获取 APIKey 或 JWT Token。
 

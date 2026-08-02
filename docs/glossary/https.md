@@ -1,10 +1,14 @@
+> [!DANGER]
+>
+> 本页由 AI 工具参考代码编写，尚未经过人工审核，内容仅供参考。如果无法解决问题或需要协助部署，可邮箱联系：kuohu@getastra.cn
+
 # HTTPS
 
 ## 通俗解释
 
 HTTPS 就是加密的 HTTP。数据在传输过程中被加密，别人偷看也看不懂。浏览器地址栏的锁图标就表示正在使用 HTTPS。
 
-AstraSchedule 外网部署使用 Cloudflare 自动管理 HTTPS 证书。
+AstraSchedule 外网部署使用 Cloudflare（或阿里云 ESA）自动管理 HTTPS 证书。
 
 ## 专业解释
 
@@ -27,4 +31,4 @@ HTTPS（HTTP Secure）是 HTTP 的安全版本，通过 TLS/SSL 协议加密数�
 - **云服务商**：如 Cloudflare、阿里云
 - **自签名**：仅用于内网测试
 
-在 AstraSchedule 中，Cloudflare 自动管理 HTTPS 证书，无需手动操作。
+在 AstraSchedule 中，Cloudflare（或阿里云 ESA）自动管理 HTTPS 证书，无需手动操作。

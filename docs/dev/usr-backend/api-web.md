@@ -18,7 +18,7 @@
 
 ### 写操作密码确认
 
-所有写操作（PUT/POST/DELETE）需通过 `X-Verify-Password` 头传递密码进行二次确认。
+大多数写操作（PUT/POST/DELETE）需通过 `X-Verify-Password` 头传递密码进行二次确认（`secureWrite` 分组）。**例外**：用户管理接口 `/web/users*`（仅需 `admin` 角色）与认证接口 `/web/auth/*` 不需要密码确认。
 
 ### 角色与权限（RBAC）
 
@@ -30,7 +30,7 @@
 | `class_w` | 班级级写入权限 |
 | `readonly` | 只读权限 |
 
-角色通过 `scope` 字段限定作用范围（如 `学校/年级/班级`）。启动时自动创建默认管理员 `admin/admin`，首次登录需修改密码。
+角色通过 `scope` 字段限定作用范围（如 `学校/年级/班级`）。**后端不会自动创建默认管理员**，管理员账号需由部署方创建（自建部署通常配合系统端「Astra 用户管理」，SaaS 模式在注册租户时创建）。
 
 ## 配置相关接口
 
@@ -107,12 +107,14 @@
 
 ## 系统备份 / 还原接口
 
-- `GET /web/backup/export` — 导出完整备份
-- `POST /web/backup/import` — 导入备份
+- `GET /web/backup/export` — 导出完整备份（旧接口）
+- `POST /web/backup/import` — 导入备份（旧接口）
+- `POST /web/backup/full-export` — 导出完整备份（当前管理端使用的接口）
+- `POST /web/backup/full-import` — 导入完整备份（当前管理端使用的接口）
 
 说明：
 
-- 两个接口都需要 JWT 认证 + 密码确认。
+- 四个接口都需要 JWT 认证；写操作按 `secureWrite` 规则要求密码确认。
 - `export` 返回完整数据库备份 JSON 文件流，包含以下八张表的数据：
   - `schedules` — 课表
   - `client_configs` — 客户端配置

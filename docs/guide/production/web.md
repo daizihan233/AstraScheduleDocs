@@ -17,7 +17,7 @@ Cloudflare Pages 的部署步骤与极低成本方案完全一致。
 
 参见 [极低成本方案 - 部署管理端到 Cloudflare Pages](../lowcost/web-cloudflare.md)。
 
-**唯一区别**：在修改 `src/global.js` 时，`APISRV` 的值填写生产级后端地址，如 `https://api.your-domain.com`。
+**唯一区别**：部署后在登录页「后端地址」栏填写生产级后端地址，如 `https://api.your-domain.com`。
 
 ## 选项二：阿里云 OSS + ESA 静态托管
 
@@ -27,16 +27,16 @@ Cloudflare Pages 的部署步骤与极低成本方案完全一致。
 
 #### 1. 构建前端
 
-在 `NaiveClassSchedule` 项目中执行构建：
+在 `usr-dashboard` 项目中执行构建：
 
 ```shell
-cd NaiveClassSchedule
+cd usr-dashboard
 bun run build
 ```
 
 构建产物在 `dist/` 目录下。
 
-> ⚠️ 构建前请先修改 `src/global.js` 中的 `APISRV` 为你的生产级后端地址。
+> 管理端无需修改源码指定后端地址：部署后在登录页「后端地址」栏填写即可（保存在浏览器本地）。
 
 #### 2. 创建 OSS Bucket
 
@@ -82,6 +82,8 @@ ossutil cp -r dist/ oss://astra-admin/ --update
 1. 进入 Bucket 的「传输管理」→「域名管理」
 2. 绑定自定义域名，如 `admin.your-domain.com`
 3. 开启 HTTPS（OSS 可自动申请免费证书）
+
+> ⚠️ 阿里云 OSS 绑定自定义域名（中国大陆地域）要求域名已完成 **ICP 备案**，未备案域名无法绑定。
 
 #### 6. 配置 CDN 加速（推荐）
 

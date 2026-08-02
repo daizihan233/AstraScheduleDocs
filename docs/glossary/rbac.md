@@ -1,3 +1,7 @@
+> [!DANGER]
+>
+> 本页由 AI 工具参考代码编写，尚未经过人工审核，内容仅供参考。如果无法解决问题或需要协助部署，可邮箱联系：kuohu@getastra.cn
+
 # RBAC（基于角色的访问控制）
 
 ## 通俗解释
@@ -25,4 +29,4 @@ RBAC（Role-Based Access Control）是一种访问控制模型，通过角色间
 | class_w | 班级级写入 |
 | readonly | 只读 |
 
-角色通过 `scope` 字段限定作用范围（如 `学校/年级/班级`）。
+角色通过 `scope` 字段限定作用范围（如 `学校/年级/班级`）。其中 `admin` 为全局管理员（通常由部署方或系统端创建），`school_w` / `grade_w` / `class_w` 为各级写入角色，`readonly` 为只读角色。

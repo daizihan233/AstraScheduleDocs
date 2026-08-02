@@ -1,6 +1,14 @@
 [
-  "index",
-  "architecture",
+  {
+    "type": "file",
+    "name": "index",
+    "label": "开发指南"
+  },
+  {
+    "type": "file",
+    "name": "architecture",
+    "label": "系统架构"
+  },
   {
     "type": "dir",
     "name": "desktop",
@@ -11,13 +19,38 @@
   {
     "type": "dir",
     "name": "usr-backend",
-    "label": "User Backend",
+    "label": "用户端后端",
     "collapsible": true,
     "collapsed": true
   },
-  "usr-dashboard",
-  "sys-backend",
-  "sys-dashboard",
-  "go-valence-cal",
-  "docs-contrib"
+  {
+    "type": "file",
+    "name": "usr-dashboard",
+    "label": "用户端管理后台"
+  },
+  {
+    "type": "file",
+    "name": "sys-backend",
+    "label": "系统端后端"
+  },
+  {
+    "type": "file",
+    "name": "sys-dashboard",
+    "label": "系统端管理后台"
+  },
+  {
+    "type": "file",
+    "name": "go-valence-cal",
+    "label": "调休计算库"
+  },
+  {
+    "type": "file",
+    "name": "contributing",
+    "label": "代码贡献"
+  },
+  {
+    "type": "file",
+    "name": "docs-contrib",
+    "label": "文档贡献"
+  }
 ]

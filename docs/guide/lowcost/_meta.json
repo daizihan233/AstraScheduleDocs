@@ -1,1 +1,32 @@
-["index", "server-fc", "web-cloudflare", "cloudflare"]
+[
+  {
+    "type": "file",
+    "name": "index",
+    "label": "方案总览"
+  },
+  {
+    "type": "file",
+    "name": "architecture",
+    "label": "架构与成本"
+  },
+  {
+    "type": "file",
+    "name": "server-fc",
+    "label": "部署后端"
+  },
+  {
+    "type": "file",
+    "name": "web-cloudflare",
+    "label": "部署管理端"
+  },
+  {
+    "type": "file",
+    "name": "cloudflare",
+    "label": "Cloudflare 配置"
+  },
+  {
+    "type": "file",
+    "name": "weather-api",
+    "label": "天气 API 凭证"
+  }
+]

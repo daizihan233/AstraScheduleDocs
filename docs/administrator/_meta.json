@@ -1,1 +1,11 @@
-["index", "config", "waf-cdn", "https", "backup", "monitor"]
+[
+  "index",
+  "config",
+  "upgrade",
+  "service",
+  "backup",
+  "maintenance",
+  "monitor",
+  "https",
+  "waf-cdn"
+]

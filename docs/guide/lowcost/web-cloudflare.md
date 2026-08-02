@@ -17,31 +17,24 @@ Cloudflare Pages 是一个免费的前端托管平台，可以自动从 GitHub �
 
 ### 1. Fork 管理端仓库
 
-1. 打开 [AstraSchedule/admin](https://github.com/AstraSchedule/admin)
+1. 打开 [AstraSchedule/usr-dashboard](https://github.com/AstraSchedule/usr-dashboard)
 2. 点击右上角 **Fork** 按钮
 3. 仓库会复制到你的 GitHub 账号下
 
 <!-- TODO: 截图 - Fork 按钮 -->
 
-### 2. 修改配置
+### 2. 确认无需修改源码
 
-1. 在你 Fork 的仓库中，找到 `src/global.js` 文件
-2. 点击编辑按钮，将 `APISRV` 的值改为你的后端地址：
+管理端**不需要**修改任何源码来指定后端地址。后端地址在部署后的登录页输入框填写，会保存在浏览器本地。
 
-```js
-export const APISRV = "https://api.your-domain.com"
-```
-
-3. 提交修改（Commit changes）
-
-<!-- TODO: 截图 - 编辑 global.js -->
+如果你希望默认值直接指向你的后端（免去每次输入），可以修改 `src/global.js` 中保存默认地址的逻辑后重新构建——但对绝大多数场景没必要。
 
 ### 3. 部署到 Cloudflare Pages
 
 1. 打开 [Cloudflare Dashboard](https://dash.cloudflare.com/)，登录账号
 2. 进入 **Workers & Pages** → **Create** → **Pages** → **Connect to Git**
 3. 授权 Cloudflare 访问你的 GitHub 仓库
-4. 选择你 Fork 的 `admin` 仓库
+4. 选择你 Fork 的 `usr-dashboard` 仓库
 5. 构建配置：
 
 | 配置项 | 值 |
@@ -63,11 +56,14 @@ export const APISRV = "https://api.your-domain.com"
 
 <!-- TODO: 截图 - Cloudflare Pages 域名配置 -->
 
-### 5. 初始化数据库
+### 5. 登录并初始化服务器
 
 1. 浏览器打开 `https://admin.your-domain.com`
-2. 首次访问会进入初始化引导页面
-3. 按提示完成数据库初始化（数据会自动写入后端）
+2. 登录页「后端地址」栏填入你的后端地址（如 `https://api.your-domain.com`）
+3. 输入管理员账号密码登录
+4. 若提示「服务端尚未配置学校/年级/班级」，点击「初始化服务器」，按提示填写学校/年级/班级和管理员密码即可（首次配置会写入后端）
+
+> 管理员账号由部署方预先创建，后端不会自动生成默认账号。
 
 ### 6. 验证
 

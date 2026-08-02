@@ -63,10 +63,45 @@ usr-backend/
 
 4 类规则按优先级叠加：COMPENSATION → TIMETABLE → SCHEDULE → ALL。支持多级作用域：ALL → school → school/grade → school/grade/class。
 
-## 调试
+## 本地开发环境搭建
+
+1. 安装 [Go 1.26+](https://go.dev/dl/) 与 Git
+2. 克隆仓库并进入目录：
 
 ```bash
-go build ./...
-go fmt ./...
-go mod tidy
+git clone https://github.com/AstraSchedule/usr-backend.git
+cd usr-backend
 ```
+
+3. 生成配置文件：
+
+```bash
+cp config.template.toml config.toml
+```
+
+4. 按需修改 `config.toml`：
+   - 开发建议使用 SQLite：`db.type = "sqlite"`、`db.path = "./data/dev.db"`（无需安装数据库）
+   - `apikey.apihost` 为必填项，即使不开发天气功能也要保留（可填占位域名）
+   - 开发 WebSocket 功能时将 `run.serverless` 设为 `false`
+5. 启动：
+
+```bash
+go run .
+```
+
+启动成功后监听 `:9000`（可用 `curl http://localhost:9000/web/health` 验证）。
+
+> 注意：后端**不会**自动创建管理员账号。本地开发需要先通过[用户管理接口](./api-web)（或配合系统端）创建一个 `admin` 用户才能登录管理端。
+
+## 常用命令
+
+```bash
+go build ./...      # 构建
+go fmt ./...        # 格式化
+go mod tidy         # 依赖整理
+go test ./...       # 运行测试
+```
+
+## OpenAPI 文档
+
+接口规范见仓库根目录 `AstraServerGo.openapi.json`。**修改或新增 API 时必须同步更新该文件**。

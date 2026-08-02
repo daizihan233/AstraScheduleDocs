@@ -13,7 +13,7 @@
 ## 你需要准备
 
 - 一台 Linux 服务器（可以与后端共用同一台）
-- 已安装 Node.js v20+ 和 npm
+- 已安装 Bun（https://bun.sh），或在本机装好 Node.js 构建后上传 `dist/`
 - 后端 API 地址（内网 IP + 端口）
 
 如果管理端和后端在同一台服务器上，后端 API 地址为 `http://<服务器IP>:9000`。
@@ -29,31 +29,21 @@ sudo yum install git -y    # CentOS/RHEL
 
 # 克隆仓库
 cd /opt
-sudo git clone https://github.com/AstraSchedule/admin.git
-cd NaiveClassSchedule
+sudo git clone https://github.com/AstraSchedule/usr-dashboard.git
+cd usr-dashboard
 ```
 
-### 2. 修改 API 地址配置
+### 2. 确认后端地址（无需修改源码）
 
-编辑 `src/global.js` 文件，将 `APISRV` 变量的值改为后端的内网访问地址：
+管理端**不需要**修改任何源码来指定后端地址。登录页上有「后端地址」输入框，登录时填入即可，地址会保存在浏览器本地，下次自动带出。
 
-```bash
-sudo nano src/global.js
+内网部署时在登录页后端地址栏填写：
+
+```
+http://192.168.1.100:9000
 ```
 
-找到下面这一行：
-
-```js
-export const APISRV = "https://api.example.com"
-```
-
-修改为你的后端内网地址，例如：
-
-```js
-export const APISRV = "http://192.168.1.100:9000"
-```
-
-> 注意：这里要带上协议 `http://` 和端口号 `:9000`。内网部署通常使用 HTTP 协议。
+> 注意：地址要带上协议 `http://` 和端口号 `:9000`。内网部署通常使用 HTTP 协议。
 
 ### 3. 安装依赖并构建
 
@@ -95,7 +85,7 @@ server {
     server_name _;   # 匹配所有访问，也可改为服务器的内网 IP
 
     # 管理端静态文件
-    root /opt/NaiveClassSchedule/dist;
+    root /opt/usr-dashboard/dist;
     index index.html;
 
     # 日志文件
@@ -108,7 +98,7 @@ server {
     }
 
     # 后端 API 反向代理（可选：如需要 Web 端直接访问后端接口）
-    # 如果已经通过 global.js 的 APISRV 直连后端，此段不需要
+    # 如果管理端在登录页直连后端，此段不需要
     # location /api/ {
     #     proxy_pass http://127.0.0.1:9000/;
     #     proxy_set_header Host $host;
@@ -186,8 +176,8 @@ http://192.168.1.100
 应该能看到 AstraSchedule 管理端的登录页面。
 
 首次使用时：
-1. 使用默认管理员账号登录：用户名 `admin`，密码 `admin`（首次登录需修改密码）
-2. 进入管理后台后，可以开始配置学期、课表、科目等信息
+1. 登录需要管理员账号。自建部署时账号由部署方创建：通常配合系统端（sys-dashboard）的「Astra 用户管理」创建管理员，或在数据库中手动初始化 `users` 表（后端不会自动创建默认账号）
+2. 登录后进入管理后台，可以开始配置学校、年级、班级、课表等信息
 
 ### 6. 防火墙配置（如有需要）
 
@@ -204,17 +194,16 @@ sudo firewall-cmd --reload
 
 ## 可选方案：通过 Nginx 反向代理后端 API
 
-上面的配置中，管理端通过 `global.js` 中的 `APISRV` 直连后端。这种方式简单直接，但在某些场景下可能不方便（例如客户端和管理端不在同一网段）。
+上面的配置中，管理端在登录页直接填写后端地址直连。这种方式简单直接，但在某些场景下可能不方便（例如客户端和管理端不在同一网段）。
 
 此时可以让 Nginx 作为统一入口，反向代理后端 API：
 
-1. 将 `global.js` 中的 `APISRV` 改为空字符串或 `/api`
-2. 取消 Nginx 配置中 API 反向代理段的注释，调整如下：
+1. 在 Nginx 配置中加入下面的 `/web/` 反代段（管理端所有 API 都以 `/web/` 开头）
+2. 登录页后端地址栏填写 Nginx 的地址（如 `http://192.168.1.100`），不要带 `/web`
 
 ```nginx
 # 后端 API 反向代理
-location /api/ {
-    rewrite ^/api/(.*)$ /$1 break;
+location /web/ {
     proxy_pass http://127.0.0.1:9000;
     proxy_set_header Host $host;
     proxy_set_header X-Real-IP $remote_addr;
@@ -223,12 +212,14 @@ location /api/ {
 }
 ```
 
-3. 重新构建管理端并重载 Nginx
+3. 重新加载 Nginx：`sudo systemctl reload nginx`
 
 通过 Nginx 反代的优势：
 - 前端和后端通过同一地址访问，避免 CORS 跨域问题
 - 后期如需添加 HTTPS，只需在 Nginx 配置一次证书
 - 可在 Nginx 层统一添加访问控制
+
+> 注意：Nginx 反代后，后端 `config.toml` 的 `server.domain` 需要包含管理端的访问来源地址（如 `http://192.168.1.100`）。
 
 ## 常见问题
 
@@ -246,7 +237,7 @@ location / {
 
 1. 确认后端服务正在运行：`sudo systemctl status astraschedule`
 2. 在服务器上用 `curl http://localhost:9000/` 测试后端响应
-3. 检查 `global.js` 中的 `APISRV` 地址是否正确
+3. 检查登录页「后端地址」栏填写的是否正确（无需改源码）
 4. 确认服务器防火墙已放行后端端口 9000
 5. 检查 `config.toml` 中 `server.domain` 是否包含管理端的访问来源地址
 

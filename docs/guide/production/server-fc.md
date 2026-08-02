@@ -24,7 +24,7 @@
 - 阿里云账号（已实名认证）
 - 已创建 MySQL Serverless 实例（参见 [配置 MySQL Serverless 数据库](./mysql.md)）
 - 已开通函数计算服务
-- 从 [GitHub Release](https://github.com/AstraSchedule/backend/releases/latest) 下载 usr-backend 对应 Linux 二进制（资源名：`AstraScheduleServerGo-linux-amd64`）
+- 从 [GitHub Release](https://github.com/AstraSchedule/usr-backend/releases/latest) 下载 usr-backend 对应 Linux 二进制（资源名：`AstraScheduleServerGo-linux-amd64`）
 
 ## 步骤
 
@@ -52,6 +52,8 @@
 2. 将下载的 `AstraScheduleServerGo-linux-amd64` 重命名为 `astrago`
 3. 创建 `config.toml` 配置文件（内容见下方）
 4. 将两个文件打包为 ZIP 并上传
+
+> ⚠️ 打包前请确保 `astrago` 具有执行权限（Linux 下执行 `chmod +x astrago`）。部分压缩工具打包 ZIP 时不保留执行权限，会导致启动命令 `./astrago` 失败。
 
 ### 4. 配置文件
 
@@ -93,7 +95,11 @@ serverless = true
 |--------|-----|
 | 启动命令 | `./astrago` |
 | 监听端口 | 9000 |
-| 环境变量 | `GIN_MODE=release` |
+| 环境变量 | 首次部署**不要设置** `GIN_MODE=release`（见下方警告） |
+
+> [!WARNING]
+>
+> **首次部署必须先建表**：当数据库为 MySQL 且环境变量 `GIN_MODE=release` 时，后端会**跳过自动建表**（AutoMigrate），数据库里没有任何表，登录/查询会全部报错。首次部署请先**不设置** `GIN_MODE=release` 启动一次完成建表，之后再补上 `GIN_MODE=release` 重新部署。（SQLite 模式不受影响，总是自动建表。）
 
 ### 6. 配置 HTTP 触发器
 
@@ -122,6 +128,8 @@ MySQL Serverless 实例默认在 VPC 内网中。为了让函数计算能访问�
 1. 进入函数详情页，点击「配置」→「网络」
 2. 选择 MySQL 实例所在的 VPC 和交换机
 3. 保存配置
+
+> ⚠️ 若函数计算尚未开通对应 VPC 的访问权限，需要先在函数计算控制台授权（「服务配置 → 角色」中为服务绑定具备 VPC 访问权限的角色），否则函数无法连接 MySQL。
 
 > 💡 如果选择 MySQL 的「公网访问」，则无需配置 VPC，但安全性较低，不推荐生产环境使用。
 

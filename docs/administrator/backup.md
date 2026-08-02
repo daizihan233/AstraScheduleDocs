@@ -12,9 +12,8 @@ AstraSchedule 需要备份的数据包括：
 
 - **数据库**：所有班级的课表、作息、科目、配置、自动任务
 - **服务端配置文件**：`config.toml`（API Key、Token、数据库连接信息）
-- **管理端源码配置**：`src/global.js`（后端地址）
 
-数据库是最关键的部分，必须定期备份。配置文件和源码配置变动较少，但建议在首次部署后备份一份。
+数据库是最关键的部分，必须定期备份。配置文件变动较少，但建议在首次部署后备份一份。管理端为纯前端构建产物，后端地址在登录页填写，无需备份源码。
 
 ## 🔰 极低成本方案（SQLite 备份）
 
@@ -23,11 +22,11 @@ AstraSchedule 需要备份的数据包括：
 ### 方法一：管理端导出（推荐，最简单）
 
 1. 浏览器打开管理端（`https://admin.你的域名.com`）
-2. 进入「实用工具」→「完整导出」
+2. 进入「实用工具」→「导出备份」
 3. 点击导出，浏览器会自动下载一个 JSON 备份文件
 4. 将 JSON 文件保存到安全位置
 
-> 💡 导出的 JSON 文件是完整的数据快照，可以直接通过「完整导入」恢复到任何 AstraSchedule 后端，支持跨数据库类型迁移（SQLite → MySQL 或 MySQL → SQLite）。
+> 💡 导出的 JSON 文件是完整的数据快照，可以直接通过「导入还原」恢复到任何 AstraSchedule 后端，支持跨数据库类型迁移（SQLite → MySQL 或 MySQL → SQLite）。
 
 ### 方法二：手动复制数据库文件
 
@@ -59,11 +58,10 @@ cp /tmp/data/astra.db /tmp/data/astra-backup-$(date +%Y%m%d).db
 #### 手动备份
 
 ```shell
-# 查看数据库文件路径（默认在 config.toml 的 [db] path 中配置）
-# 通常为 /opt/astra/data/astra.db
+# 查看数据库文件路径（以 config.toml 的 db.path 为准，本指南示例为 /opt/astraschedule/data/astra.db）
 
 # 备份命令
-cp /opt/astra/data/astra.db /backup/astra-$(date +%Y%m%d-%H%M%S).db
+cp /opt/astraschedule/data/astra.db /backup/astra-$(date +%Y%m%d-%H%M%S).db
 ```
 
 #### crontab 定时备份
@@ -73,7 +71,7 @@ cp /opt/astra/data/astra.db /backup/astra-$(date +%Y%m%d-%H%M%S).db
 crontab -e
 
 # 添加定时任务：每天凌晨 2:00 自动备份
-0 2 * * * cp /opt/astra/data/astra.db /backup/astra-$(date +\%Y\%m\%d).db
+0 2 * * * cp /opt/astraschedule/data/astra.db /backup/astra-$(date +\%Y\%m\%d).db
 ```
 
 #### systemd timer 定时备份（推荐）
@@ -85,7 +83,7 @@ systemd timer 比 crontab 更可靠，且日志集成到 journald。
 ```shell
 #!/bin/bash
 BACKUP_DIR="/backup/astra"
-DB_PATH="/opt/astra/data/astra.db"
+DB_PATH="/opt/astraschedule/data/astra.db"
 RETENTION_DAYS=30
 
 mkdir -p "$BACKUP_DIR"
@@ -213,12 +211,12 @@ RDS 自动备份已经比较可靠，但建议额外通过管理端导出 JSON �
 
 1. 确保后端正常运行
 2. 浏览器打开管理端
-3. 进入「实用工具」→「完整导入」
+3. 进入「实用工具」→「导入还原」
 4. 选择之前导出的 JSON 备份文件
 5. 确认导入
 6. 导入完成后检查各班级配置是否正确
 
-> ⚠️ 导入操作**会覆盖**当前数据库中的所有数据。确认无误后再执行。
+> ⚠️ 导入会**覆盖已存在的同名记录**（按唯一键更新），备份中不存在的记录不会被删除。恢复前建议先导出当前数据作为兜底。
 
 ### 从 SQLite 文件恢复（内网方案）
 
@@ -227,7 +225,7 @@ RDS 自动备份已经比较可靠，但建议额外通过管理端导出 JSON �
 sudo systemctl stop astrago
 
 # 恢复备份
-cp /backup/astra-20260101.db /opt/astra/data/astra.db
+cp /backup/astra-20260101.db /opt/astraschedule/data/astra.db
 
 # 重启后端
 sudo systemctl start astrago

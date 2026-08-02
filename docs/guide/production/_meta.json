@@ -1,1 +1,27 @@
-["index", "server-fc", "mysql", "esa", "web"]
+[
+  {
+    "type": "file",
+    "name": "index",
+    "label": "方案总览"
+  },
+  {
+    "type": "file",
+    "name": "server-fc",
+    "label": "部署后端"
+  },
+  {
+    "type": "file",
+    "name": "mysql",
+    "label": "MySQL Serverless"
+  },
+  {
+    "type": "file",
+    "name": "esa",
+    "label": "ESA 配置"
+  },
+  {
+    "type": "file",
+    "name": "web",
+    "label": "部署管理端"
+  }
+]

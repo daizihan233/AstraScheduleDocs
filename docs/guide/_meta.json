@@ -1,8 +1,24 @@
 [
-  "index",
-  "saas",
-  "choose-deployment",
-  "client",
+  {
+    "type": "file",
+    "name": "index",
+    "label": "认识一下"
+  },
+  {
+    "type": "file",
+    "name": "choose-deployment",
+    "label": "选择部署方案"
+  },
+  {
+    "type": "file",
+    "name": "saas",
+    "label": "SaaS 免部署"
+  },
+  {
+    "type": "file",
+    "name": "client",
+    "label": "安装客户端"
+  },
   {
     "type": "dir",
     "name": "lowcost",

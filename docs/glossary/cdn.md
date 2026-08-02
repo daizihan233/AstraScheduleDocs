@@ -1,10 +1,14 @@
+> [!DANGER]
+>
+> 本页由 AI 工具参考代码编写，尚未经过人工审核，内容仅供参考。如果无法解决问题或需要协助部署，可邮箱联系：kuohu@getastra.cn
+
 # CDN（内容分发网络）
 
 ## 通俗解释
 
 CDN 就是把你的网站内容复制到世界各地的服务器上。用户访问时，自动从最近的服务器获取，速度快很多。就像连锁超市，到处都有分店，买东西不用跑总店。
 
-AstraSchedule 使用 Cloudflare 加速并保护 API 访问。
+AstraSchedule 使用 Cloudflare 加速并保护 API 访问；中国大陆部署可选阿里云 ESA。
 
 ## 专业解释
 
@@ -22,4 +26,4 @@ CDN（Content Delivery Network，内容分发网络）是由分布式服务器�
 - **提高可用性**：节点故障自动切换
 - **安全防护**：隐藏源站 IP，提供 DDoS 防护
 
-在 AstraSchedule 中，Cloudflare CDN 同时提供 WAF、HTTPS 证书、DDoS 防护等功能。
+在 AstraSchedule 中，Cloudflare CDN 同时提供 WAF、HTTPS 证书、DDoS 防护等功能；面向中国大陆用户的部署可选用阿里云 ESA 获得更低延迟。

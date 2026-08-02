@@ -1,3 +1,7 @@
+> [!DANGER]
+>
+> 本页由 AI 工具参考代码编写，尚未经过人工审核，内容仅供参考。如果无法解决问题或需要协助部署，可邮箱联系：kuohu@getastra.cn
+
 # 极低成本外网部署架构图
 
 ## 架构概览
@@ -62,12 +66,11 @@ sequenceDiagram
     FC-->>CF: 响应成功
     CF-->>B: 返回结果
     
-    Note over C,CF: 客户端实时同步
-    C->>CF: WebSocket 连接
-    CF->>FC: 建立 WebSocket
-    FC-->>CF: 推送 SyncConfig
-    CF-->>C: 通知配置更新
-    C->>CF: 重新获取课表
+    Note over C,CF: 客户端同步课表（Serverless 模式禁用 WebSocket，改用轮询）
+    C->>CF: GET /:school/:grade/:class（定时轮询）
+    CF->>FC: 转发请求
+    FC-->>CF: 返回最新课表
+    CF-->>C: 返回课表
 ```
 
 ## 部署流程
@@ -112,7 +115,7 @@ graph TB
     
     subgraph "阿里云"
         FC["函数计算实例"]
-        Storage["NAS 存储"]
+        Storage["/tmp 临时存储<br/>（实例回收即清空）"]
     end
     
     subgraph "Cloudflare Pages"

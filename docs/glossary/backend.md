@@ -1,3 +1,7 @@
+> [!DANGER]
+>
+> 本页由 AI 工具参考代码编写，尚未经过人工审核，内容仅供参考。如果无法解决问题或需要协助部署，可邮箱联系：kuohu@getastra.cn
+
 # 后端（Backend）
 
 ## 通俗解释
@@ -20,6 +24,6 @@ AstraSchedule 的后端包括：
 | 组件 | 技术栈 | 用途 |
 |------|--------|------|
 | usr-backend | Go + Gin + GORM | 核心 API 服务 |
-| sys-backend | Go + Gin | 系统管理 |
+| sys-backend | Go + Gin + GORM | 系统管理 |
 
 后端通常不直接与用户交互，而是通过 API 为前端提供数据和服务。

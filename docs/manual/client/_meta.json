@@ -22,12 +22,7 @@
   {
     "type": "file",
     "name": "window-mode",
-    "label": "窗口模式"
-  },
-  {
-    "type": "file",
-    "name": "keyboard-mouse",
-    "label": "键盘与鼠标"
+    "label": "窗口与交互"
   },
   {
     "type": "file",

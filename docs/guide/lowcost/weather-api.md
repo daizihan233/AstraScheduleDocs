@@ -155,7 +155,7 @@ apihost = "xxxxxxxx.re.qweatherapi.com"
 weather = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 
 [secret]
-token = "your_admin_token"
+token = "your_admin_token"  # JWT 签名密钥，不是登录密码，务必改成随机字符串
 
 [server]
 host = "0.0.0.0"
@@ -187,7 +187,7 @@ private_key_pem = "-----BEGIN PRIVATE KEY-----\nMC4CAQAwBQYDK2VwBCIEI...\n-----E
 expires = 900
 
 [secret]
-token = "your_admin_token"
+token = "your_admin_token"  # JWT 签名密钥，不是登录密码，务必改成随机字符串
 
 [server]
 host = "0.0.0.0"

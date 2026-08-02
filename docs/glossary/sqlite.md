@@ -1,10 +1,14 @@
+> [!DANGER]
+>
+> 本页由 AI 工具参考代码编写，尚未经过人工审核，内容仅供参考。如果无法解决问题或需要协助部署，可邮箱联系：kuohu@getastra.cn
+
 # SQLite
 
 ## 通俗解释
 
 SQLite 是一个嵌入式数据库，整个数据库就是一个文件。不用安装服务器，不用配置，程序直接读写文件。适合小型应用和开发测试。
 
-AstraSchedule 默认使用 SQLite，零配置即可运行。
+AstraSchedule 支持 SQLite，在 `config.toml` 中设置 `db.type = "sqlite"` 即可零安装运行。
 
 ## 专业解释
 
@@ -24,4 +28,4 @@ SQLite 是一个 C 语言库，实现了小型、快速、自包含的 SQL 数�
 | 扩展性 | 单机 | 支持集群 |
 | 适合场景 | 小型应用 | 大型应用 |
 
-在 AstraSchedule 中，SQLite 适合单学校部署，数据存在 `astra.db` 文件中。
+在 AstraSchedule 中，SQLite 适合单学校部署，数据存放在 `db.path` 指定的数据库文件中（模板默认 `./data/astra_schedule.db`）。

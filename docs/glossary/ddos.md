@@ -1,3 +1,7 @@
+> [!DANGER]
+>
+> 本页由 AI 工具参考代码编写，尚未经过人工审核，内容仅供参考。如果无法解决问题或需要协助部署，可邮箱联系：kuohu@getastra.cn
+
 # DDoS（分布式拒绝服务攻击）
 
 ## 通俗解释
@@ -22,3 +26,5 @@ DDoS（Distributed Denial of Service）是一种网络攻击，通过控制大�
 - **黑白名单**：阻止恶意 IP
 
 Cloudflare 免费套餐提供基础 DDoS 防护，自动检测和缓解攻击。
+
+在 AstraSchedule 中，外网部署通过 Cloudflare 免费 DDoS 防护即可满足学校场景需求。

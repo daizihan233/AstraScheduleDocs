@@ -29,8 +29,12 @@
 
 ## 更新源配置
 
-默认更新源：`https://github.com/AstraSchedule/desktop/releases`
+默认更新源（GitHub Releases 镜像代理，由开发者自行维护）：
 
-镜像代理：`https://hubproxy.khbit.cn`
+```
+https://hubproxy.khbit.cn/https://github.com/daizihan233/AstraSchedule/releases/latest/download
+```
 
-可通过托盘菜单"更新源（可选）"修改为自定义地址，需指向包含 `latest.yml` 的目录。
+原始仓库为 `daizihan233/AstraSchedule`，客户端默认通过 `hubproxy.khbit.cn` 镜像加速访问。
+
+可通过托盘菜单「更新源（可选）」修改为自定义地址，需指向包含 `latest.yml` 的目录。

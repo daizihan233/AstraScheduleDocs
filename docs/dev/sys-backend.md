@@ -28,7 +28,7 @@ sys-backend/
 
 ## API 概览
 
-所有接口前缀 `/web`，JWT 认证。
+所有接口前缀 `/web`，除 `/web/health`（健康检查，公开）外均需 JWT 认证。
 
 ### 认证
 
@@ -99,16 +99,30 @@ port = 9001
 domain = ["https://dashboard.example.com"]
 
 [db]
+# AstraScheduleServerGo（usr-backend）数据库配置
+# type: mysql 或 sqlite
 type = "sqlite"
-path = "./data/sys.db"
+path = "/data/astra/astra_schedule.db"
 
-[sysdb]
+[sys_db]
+# sys-backend 自有数据库配置
 type = "sqlite"
 path = "./data/sys_backend.db"
 
+[astra]
+# 对接的 usr-backend 服务
+url = "http://localhost:9000"
+token = "change_this_to_a_secure_token"
+internal_secret = "change_this_to_match_astra_internal_secret"
+
 [secret]
-token = "your_secret"
+token = "change_this_to_a_secure_token"
+
+[log]
+debug = false
 ```
+
+> 完整配置请以 `sys-backend/config.template.toml` 为准。`[astra]` 段的 `internal_secret` 必须与 usr-backend 的 `internal.secret` 一致，`token` 用于系统端签发 JWT。
 
 ## 启动
 
@@ -116,3 +130,17 @@ token = "your_secret"
 go build -o sys-backend
 ./sys-backend
 ```
+
+## 本地开发
+
+1. 复制 `config.template.toml` 为 `config.toml`（TOML / YAML / JSON 任选其一，优先级见文件注释）
+2. 初始化 `sys_db` 数据库（首次启动自动建表）
+3. 填写 `[astra]` 段：`url` 指向本地 usr-backend 地址，`internal_secret` 与 usr-backend 的 `internal.secret` 保持一致
+4. 启动 usr-backend 后再启动 sys-backend
+
+```bash
+go build ./...
+go test ./...   # 运行测试
+```
+
+接口规范见仓库根目录 `SysBackend.openapi.json`，修改 API 时必须同步更新。

@@ -1,1 +1,17 @@
-["index", "server", "web"]
+[
+  {
+    "type": "file",
+    "name": "index",
+    "label": "方案总览"
+  },
+  {
+    "type": "file",
+    "name": "server",
+    "label": "部署后端"
+  },
+  {
+    "type": "file",
+    "name": "web",
+    "label": "部署管理端"
+  }
+]

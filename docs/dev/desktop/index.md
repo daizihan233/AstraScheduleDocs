@@ -20,8 +20,7 @@ desktop/
 ├── index.html                 # 主窗口（课表界面）
 ├── countdown.html             # 倒数日窗口
 ├── main/                      # 主进程模块
-│   ├── countdown/             # 倒数日子系统
-│   └── plugin/                # 插件系统
+│   └── countdown/             # 倒数日子系统
 ├── js/                        # 渲染进程脚本
 │   ├── scheduleConfig.js      # 默认课表配置
 │   ├── index.js               # 课表核心逻辑
@@ -60,7 +59,3 @@ bun run ci
 ## 窗口穿透交互
 
 客户端使用鼠标穿透 + 轮询（100ms）实现悬停交互。`win.setIgnoreMouseEvents(true, { forward: true })` 开启穿透，轮询检测鼠标是否在可交互区域，悬停时降低 opacity 至 0.1。
-
-## 插件系统
-
-详见 [插件系统开发文档](./plugin-system)。

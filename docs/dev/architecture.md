@@ -11,7 +11,7 @@
 - `desktop`：展示端客户端（Electron + 原生 HTML/CSS/JS）
 - `sys-dashboard`：系统端 Dashboard（Vue3 + Naive UI + Vite），面向运维的多租户/数据管理界面
 - `sys-backend`：系统后端（Go + Gin），管理多租户/数据库级操作，供 sys-dashboard 调用
-- `reg-go` / `reg-to`：SaaS 注册中心后端与前端（租户注册、子域名分配）
+- `reg-to` / `reg-go`：SaaS 注册中心（`reg-to` 为 Go 后端，`reg-go` 为 Vue3 前端），负责租户注册、子域名分配
 - `go-valence-cal`：调休计算能力（Go 库，通过 Go Modules 引入）
 - `docs-site`：项目文档站（Rspress），即你正在阅读的文档
 
@@ -34,7 +34,9 @@
 - `autorun_records`：自动任务记录（通过 `scope` 字段限定生效班级）
 - `countdown_records`：倒数日数据（通过 `scope` 字段限定生效班级）
 - `data_versions`：数据版本号
-- `users`：管理员用户（用户名、密码哈希、角色、作用域）
+- `users`：管理员用户（`scope` 字段支持学校/年级/班级任意粒度，配合角色控制读写范围）
+
+> 注：`autorun_records`、`countdown_records`、`users` 均通过 `scope` 字段限定生效范围，支持学校/年级/班级三级任意粒度，而非固定为某一级。
 
 ## 多租户架构（SaaS 模式）
 

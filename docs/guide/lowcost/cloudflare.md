@@ -115,7 +115,7 @@ Full (strict) 模式要求你的源站（函数计算和 Cloudflare Pages）也�
 WAF 可以自动拦截常见的安全威胁，保护你的后端接口和管理端。
 
 1. 进入 **Security → WAF** 页面
-2. Cloudflare 免费套餐已默认启用了 **Cloudflare Managed Ruleset**，这是一组由 Cloudflare 维护的安全规则，可以防御：
+2. 在 **Security → WAF** 页面，开启 **Cloudflare Managed Ruleset**（免费套餐也可以启用，需手动打开），这是一组由 Cloudflare 维护的安全规则，可以防御：
    - SQL 注入攻击
    - 跨站脚本攻击（XSS）
    - 命令注入
@@ -141,7 +141,9 @@ WAF 可以自动拦截常见的安全威胁，保护你的后端接口和管理�
 
 通过速率限制可以保护后端 API 不被刷接口或被恶意高频调用，维持服务稳定。
 
-进入 **Security → WAF → Rate limiting rules**，点击 **Create rule**，建议创建以下两条规则：
+进入 **Security → WAF → Rate limiting rules**，点击 **Create rule**，建议创建以下规则：
+
+> ⚠️ Cloudflare 免费套餐的速率限制规则数量与流量额度有限（免费版约 1 条规则、每月 1 万次请求额度，以 Cloudflare 当前套餐政策为准）。规则太多会无法保存，请按需取舍。
 
 #### API 全局限速
 

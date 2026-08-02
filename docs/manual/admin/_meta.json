@@ -5,6 +5,16 @@
     "label": "仪表盘"
   },
   {
+    "type": "file",
+    "name": "structure",
+    "label": "结构管理"
+  },
+  {
+    "type": "file",
+    "name": "users",
+    "label": "用户管理"
+  },
+  {
     "type": "dir",
     "name": "config",
     "label": "课表配置",

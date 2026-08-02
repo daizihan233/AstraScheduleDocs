@@ -1,10 +1,14 @@
+> [!DANGER]
+>
+> 本页由 AI 工具参考代码编写，尚未经过人工审核，内容仅供参考。如果无法解决问题或需要协助部署，可邮箱联系：kuohu@getastra.cn
+
 # BasicAuth
 
 ## 通俗解释
 
 BasicAuth 是最简单的认证方式。每次请求时带上用户名和密码，服务器验证后才处理。密码用 Base64 编码（不是加密），所以必须配合 HTTPS 使用。
 
-AstraSchedule 管理端当前使用 JWT 认证，不再使用 BasicAuth。登录走 `/web/auth/login` 获取 Token，写操作通过 `X-Verify-Password` 二次确认**用户密码**（不是 `secret.token`）。
+AstraSchedule 管理端当前使用 JWT 认证。BasicAuth 曾是旧版本的认证方式，现已不再使用。登录走 `/web/auth/login` 获取 Token，写操作通过 `X-Verify-Password` 二次确认**用户密码**（不是 `secret.token`）。
 
 ## 专业解释
 
