@@ -31,5 +31,8 @@ export default defineConfig({
     pluginSitemap({
       siteUrl: 'https://getastra.cn',
     }),
+  ],
+  head: [
+    '<meta name="baidu-site-verification" content="codeva-QyMSxtlR6S" />'
   ]
 });
